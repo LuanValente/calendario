@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calendário Luan</title>
+    <link rel="stylesheet" href="style_calendario.css"> <!-- Vincula o arquivo CSS ao HTML -->
+</head>
+<body>
+<h2>Calendário Luan</h2>
+<form>
+    <label for="selectMes">Mês:</label>
+    <select id="selectMes" onchange="filtrarCalendario()">
+        <option value="0">Todos</option>
+        <option value="1">Janeiro</option>
+        <option value="2">Fevereiro</option>
+        <option value="3">Março</option>
+        <option value="4">Abril</option>
+        <option value="5">Maio</option>
+        <option value="6">Junho</option>
+        <option value="7">Julho</option>
+        <option value="8">Agosto</option>
+        <option value="9">Setembro</option>
+        <option value="10">Outubro</option>
+        <option value="11">Novembro</option>
+        <option value="12">Dezembro</option>
+    </select>
+
+    <label for="selectAno">Ano:</label>
+    <select id="selectAno" onchange="filtrarCalendario()">
+        <option value="0">Todos</option>
+        <option value="2022">2022</option>
+        <option value="2023">2023</option>
+        <option value="2024">2024</option>
+        <option value="2025">2025</option>
+        <!-- Adicione mais anos aqui -->
+    </select>
+</form>
+
+<h2 id="mesAno"></h2>
+<table id="calendario">
+    <tr>
+        <th>Domingo</th>
+        <th>Segunda-feira</th>
+        <th>Terça-feira</th>
+        <th>Quarta-feira</th>
+        <th>Quinta-feira</th>
+        <th>Sexta-feira</th>
+        <th>Sábado</th>
+    </tr>
+</table>
+<script>
+    var calendario = [];
+
+function criarCalendario(ano, mes) {
+    var diasDaSemana = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+    var meses = ['', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
+    var primeiroDia = new Date(ano, mes - 1, 1).getDay();
+    var numDias = new Date(ano, mes, 0).getDate();
+
+    var table = document.getElementById('calendario');
+    table.innerHTML = '';
+
+    document.getElementById('mesAno').textContent = meses[mes] + ' ' + ano;
+
+    var tr = document.createElement('tr');
+
+    for (var i = 0; i < 7; i++) {
+        var th = document.createElement('th');
+        th.textContent = diasDaSemana[i];
+        tr.appendChild(th);
+    }
+
+    table.appendChild(tr);
+
+    var dia = 1;
+
+    for (var i = 0; i < 6; i++) {
+        var tr = document.createElement('tr');
+
+        for (var j = 0; j < 7; j++) {
+            var td = document.createElement('td');
+
+            if (i === 0 && j < primeiroDia) {
+                td.textContent = '';
+            } else if (dia > numDias) {
+                td.textContent = '';
+            } else {
+                td.textContent = dia;
+                dia++;
+            }
+
+            tr.appendChild(td);
+        }
+
+        table.appendChild(tr);
+    }
+}
+
+function filtrarCalendario() {
+    var selectMes = document.getElementById('selectMes');
+    var selectAno = document.getElementById('selectAno');
+
+    var mes = parseInt(selectMes.value);
+    var ano = parseInt(selectAno.value);
+
+    criarCalendario(ano, mes);
+}
+
+filtrarCalendario();
+</script>
+</body>
+</html>
